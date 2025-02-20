@@ -1,6 +1,7 @@
 import regex as re
 from collections import defaultdict
-from cs336_basics.utils.io import get_tokenizer_from_vocab_merges_path, GPT2_PRETOKENIZER_PATTERN
+from cs336_basics.src.utils.io import get_tokenizer_from_vocab_merges_path, GPT2_PRETOKENIZER_PATTERN
+from tqdm import tqdm
 
 class bilist:
     def __init__(self, val, id, previous=None, next=None):

@@ -1,5 +1,8 @@
 GPT2_PRETOKENIZER_PATTERN = r"""'(?:[sdmt]|ll|ve|re)| ?\p{L}+| ?\p{N}+| ?[^\s\p{L}\p{N}]+|\s+(?!\S)|\s+""" # pattern for tokenization
 
+import os
+import torch
+
 def get_tokenizer_from_vocab_merges_path(
     vocab_path: str | os.PathLike,
     merges_path: str | os.PathLike,
@@ -36,3 +39,19 @@ def get_tokenizer_from_vocab_merges_path(
         for merge_token_1, merge_token_2 in gpt2_bpe_merges
     ]
     return vocab, merges
+
+def save_checkpoint(model, optimizer, iteration, out):
+    torch.save(
+        {
+            "model": model.state_dict(),
+            "optimizer": optimizer.state_dict(),
+            "iteration": iteration,
+        },
+        out,
+    )
+
+def load_checkpoint(src, model, optimizer):
+    checkpoint = torch.load(src)
+    model.load_state_dict(checkpoint["model"])
+    optimizer.load_state_dict(checkpoint["optimizer"])
+    return checkpoint["iteration"] 
